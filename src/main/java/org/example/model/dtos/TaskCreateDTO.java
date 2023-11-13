@@ -2,18 +2,18 @@ package org.example.model.dtos;
 
 import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
-@Builder
-public class TaskDTO {
+import java.time.LocalDate;
+import java.util.Date;
 
-    private int id;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TaskCreateDTO {
+
     private String name;
     private String description;
-    private String dueDate;
+    private LocalDate dueDate;
     private String priority;
     private String status;
 

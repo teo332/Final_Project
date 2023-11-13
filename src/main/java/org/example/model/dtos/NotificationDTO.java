@@ -2,14 +2,16 @@ package org.example.model.dtos;
 
 import lombok.*;
 
-@AllArgsConstructor
+import java.time.LocalDate;
+
+@Data
 @NoArgsConstructor
-@Getter
-@ToString
+@AllArgsConstructor
 @Builder
 public class NotificationDTO {
 
+    private Long id;
     private String message;
-    private String timestamp;
-    private int taskId;
+    private LocalDate timestamp;
+    private Long taskId;
 }

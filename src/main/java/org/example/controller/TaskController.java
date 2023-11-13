@@ -2,7 +2,8 @@ package org.example.controller;
 
 import jakarta.validation.Valid;
 import org.example.model.CustomResponseDTO;
-import org.example.model.dtos.TaskDTO;
+import org.example.model.dtos.TaskCreateDTO;
+import org.example.model.dtos.TaskSearchDTO;
 import org.example.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @Controller
 public class TaskController {
-     List <TaskDTO> taskDTOList = new ArrayList<>();
+     List <TaskCreateDTO> taskDTOList = new ArrayList<>();
 
     private final TaskService taskService;
 
@@ -24,17 +27,17 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<TaskDTO>> findTaskById(@RequestParam(required = false)int id){
+    @GetMapping("/search/{id}")
+    public ResponseEntity<Optional<TaskSearchDTO>> findTaskById(@PathVariable(required = false) Long id){
         return ResponseEntity.ok(taskService.findTaskById(id));
     }
     @GetMapping("/showAll")
-    public ResponseEntity<List<TaskDTO>> findAllTasks(){
+    public ResponseEntity<List<TaskSearchDTO>> findAllTasks(){
         return ResponseEntity.ok(taskService.findAllTasks());
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CustomResponseDTO> createNewTask(@RequestBody @Valid TaskDTO taskDTO, BindingResult bindingResult){
+    public ResponseEntity<CustomResponseDTO> createNewTask(@RequestBody @Valid TaskCreateDTO taskDTO, BindingResult bindingResult){
         CustomResponseDTO customResponseDTO = new CustomResponseDTO();
 
         if (bindingResult.hasErrors()){
@@ -51,8 +54,8 @@ public class TaskController {
         return new ResponseEntity<>(customResponseDTO, HttpStatus.CREATED);
 
     }
-    @DeleteMapping("/{id}")
-    public void deleteTaskById(@PathVariable int id){
+    @DeleteMapping("/delete/{id}")
+    public void deleteTaskById(@PathVariable Long id){
         taskService.deleteTaskById(id);
     }
 

@@ -1,6 +1,8 @@
 package org.example.service;
 
-import org.example.model.dtos.TaskDTO;
+import org.example.model.dtos.TaskCreateDTO;
+
+import org.example.model.dtos.TaskSearchDTO;
 import org.example.model.entities.TaskEntity;
 import org.example.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,19 +25,23 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    public List<TaskDTO> findTaskById(int id) {
-        return taskRepository.findTaskById(id);
+    public Optional<TaskSearchDTO> findTaskById(Long id) {
+        Optional<TaskEntity> taskEntityOptional = taskRepository.findById(id);
+        return taskEntityOptional.map(taskMapper::mapTaskEntityToUserSearchDTO);
     }
-    public List<TaskDTO> findAllTasks() {
-        return taskRepository.findAllTasks();
+    public List<TaskSearchDTO> findAllTasks() {
+        List<TaskEntity> taskEntities = taskRepository.findAll();
+        return taskEntities.stream()
+                .map(taskMapper::mapTaskEntityToUserSearchDTO)
+                .collect(Collectors.toList());
     }
-    public void deleteTaskById(int id){
-        taskRepository.deleteTaskById(id);
+    public void deleteTaskById(Long id){
+        taskRepository.deleteById(id);
     }
 
-    public TaskDTO createTask(TaskDTO taskDTO){
+    public TaskCreateDTO createTask(TaskCreateDTO taskDTO){
         TaskEntity taskEntity = taskMapper.mapTaskDTOtoTaskEntity(taskDTO);
-        TaskEntity createdTaskEntity = taskRepository.createTask(taskEntity);
+        TaskEntity createdTaskEntity = taskRepository.save(taskEntity);
         return taskMapper.mapTaskEntityToTaskDTO(createdTaskEntity);
     }
 

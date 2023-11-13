@@ -1,23 +1,23 @@
-package org.example.model.entities;
+package org.example.model.dtos;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "task")
-public class TaskEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Builder
+public class TaskUpdateDTO {
+
     private Long id;
     private String name;
     private String description;
     private LocalDate dueDate;
     private String priority;
     private String status;
+
 }
