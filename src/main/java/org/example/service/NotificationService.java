@@ -1,11 +1,14 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.dtos.NotificationDTO;
 import org.example.model.dtos.TaskSearchDTO;
 import org.example.model.entities.NotificationEntity;
 import org.example.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,16 +37,21 @@ public class NotificationService {
     }
 
     public NotificationDTO createNotification(NotificationDTO notificationDTO) {
-        TaskSearchDTO taskEntity = taskService.findTaskById(notificationDTO.getTaskId())
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+        try {
+            TaskSearchDTO taskEntity = taskService.findTaskById(notificationDTO.getTaskId())
+                    .orElseThrow(() -> new EntityNotFoundException("Task not found"));
 
-        NotificationEntity notificationEntity = NotificationEntity.builder()
-                .message(notificationDTO.getMessage())
-                .timestamp(LocalDate.from(LocalDateTime.now()))
-                .build();
+            NotificationEntity notificationEntity = NotificationEntity.builder()
+                    .message(notificationDTO.getMessage())
+                    .timestamp(LocalDate.now())
+                    .build();
 
-        NotificationEntity createdNotificationEntity = notificationRepository.save(notificationEntity);
-        return notificationMapper.mapNotificationEntityToDTO(createdNotificationEntity);
+            NotificationEntity createdNotificationEntity = notificationRepository.save(notificationEntity);
+            return notificationMapper.mapNotificationEntityToDTO(createdNotificationEntity);
+        } catch (EntityNotFoundException ex) {
+            // Handle exception and provide a meaningful response
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found", ex);
+        }
     }
 }
 

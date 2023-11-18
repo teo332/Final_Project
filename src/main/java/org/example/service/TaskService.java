@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.dtos.TaskCreateDTO;
 
 import org.example.model.dtos.TaskSearchDTO;
@@ -27,7 +28,8 @@ public class TaskService {
 
     public Optional<TaskSearchDTO> findTaskById(Long id) {
         Optional<TaskEntity> taskEntityOptional = taskRepository.findById(id);
-        return taskEntityOptional.map(taskMapper::mapTaskEntityToUserSearchDTO);
+        return Optional.ofNullable(taskEntityOptional.map(taskMapper::mapTaskEntityToUserSearchDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found")));
     }
     public List<TaskSearchDTO> findAllTasks() {
         List<TaskEntity> taskEntities = taskRepository.findAll();

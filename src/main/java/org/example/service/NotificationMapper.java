@@ -19,7 +19,7 @@ public class NotificationMapper {
         notificationDTO.setId(notificationEntity.getId());
         notificationDTO.setMessage(notificationEntity.getMessage());
         notificationDTO.setTimestamp(notificationEntity.getTimestamp());
-        notificationDTO.setTaskId(notificationEntity.getTask().getId());
+        notificationDTO.setTaskId(notificationEntity.getTask() != null ? notificationEntity.getTask().getId() : null);
 
         return notificationDTO;
     }

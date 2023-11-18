@@ -20,13 +20,13 @@ public class NotificationController {
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
         List<NotificationDTO> notifications = notificationService.getAllNotifications();
-        return new ResponseEntity<>(notifications, HttpStatus.OK);
+        return ResponseEntity.ok(notifications);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<NotificationDTO> createNotification(@RequestBody NotificationDTO notificationDTO) {
         NotificationDTO createdNotification = notificationService.createNotification(notificationDTO);
         return new ResponseEntity<>(createdNotification, HttpStatus.CREATED);
