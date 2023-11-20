@@ -27,4 +27,10 @@ public class TaskMapper {
         return TaskSearchDTO.builder().id(task.getId()).name(task.getName()).dueDate(task.getDueDate())
                 .priority(task.getPriority()).status(task.getStatus()).description(task.getDescription()).build();
     }
+    public TaskEntity mapTaskSearchDTOToEntity(TaskSearchDTO taskSearchDTO) {
+        TaskEntity taskEntity = new TaskEntity();
+        taskEntity.setId(taskSearchDTO.getId());
+        return taskEntity;
+    }
 }
+

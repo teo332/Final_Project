@@ -4,6 +4,8 @@ import org.example.model.dtos.NotificationDTO;
 import org.example.model.entities.NotificationEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class NotificationMapper {
 
@@ -18,7 +20,7 @@ public class NotificationMapper {
         NotificationDTO notificationDTO = new NotificationDTO();
         notificationDTO.setId(notificationEntity.getId());
         notificationDTO.setMessage(notificationEntity.getMessage());
-        notificationDTO.setTimestamp(notificationEntity.getTimestamp());
+        notificationDTO.setTimestamp(LocalDate.from(notificationEntity.getTimestamp()));
         notificationDTO.setTaskId(notificationEntity.getTask() != null ? notificationEntity.getTask().getId() : null);
 
         return notificationDTO;

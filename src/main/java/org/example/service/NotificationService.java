@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +20,14 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final TaskService taskService;
     private final NotificationMapper notificationMapper;
+    private final TaskMapper taskMapper;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository, TaskService taskService, NotificationMapper notificationMapper) {
+    public NotificationService(NotificationRepository notificationRepository, TaskService taskService, NotificationMapper notificationMapper, TaskMapper taskMapper) {
         this.notificationRepository = notificationRepository;
         this.taskService = taskService;
         this.notificationMapper = notificationMapper;
+        this.taskMapper = taskMapper;
     }
 
     public List<NotificationDTO> getAllNotifications() {
@@ -36,22 +37,26 @@ public class NotificationService {
                 .collect(Collectors.toList());
     }
 
-    public NotificationDTO createNotification(NotificationDTO notificationDTO) {
+    public NotificationDTO createNotification(NotificationDTO notificationDTO, Long taskId) {
         try {
-            TaskSearchDTO taskEntity = taskService.findTaskById(notificationDTO.getTaskId())
+            TaskSearchDTO taskEntity = taskService.findTaskById(taskId)
                     .orElseThrow(() -> new EntityNotFoundException("Task not found"));
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
                     .message(notificationDTO.getMessage())
-                    .timestamp(LocalDate.now())
+                    .timestamp(LocalDateTime.now())
+                    .task(taskMapper.mapTaskSearchDTOToEntity(taskEntity))
                     .build();
 
             NotificationEntity createdNotificationEntity = notificationRepository.save(notificationEntity);
             return notificationMapper.mapNotificationEntityToDTO(createdNotificationEntity);
         } catch (EntityNotFoundException ex) {
-            // Handle exception and provide a meaningful response
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found", ex);
         }
+    }
+
+    public void deleteAllNotifications() {
+        notificationRepository.deleteAll();
     }
 }
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker App</title>
+</head>
+<body>
+
+<h1>Task Tracker App</h1>
+
+<!-- Display All Notifications -->
+<h2>All Notifications</h2>
+<ul th:each="notification : ${notifications}">
+    <li th:text="${notification.message}"></li>
+</ul>
+
+<!-- Create Notification Form -->
+<h2>Create Notification</h2>
+<form th:action="@{/api/notifications/create}" method="post">
+    <label for="message">Message:</label>
+    <input type="text" id="message" name="message" required>
+
+    <label for="taskId">Task ID:</label>
+    <input type="text" id="taskId" name="taskId" required>
+
+    <button type="submit">Create Notification</button>
+</form>
+
+<!-- Delete All Notifications Button -->
+<h2>Delete All Notifications</h2>
+<form th:action="@{/api/notifications/deleteAll}" method="post">
+    <button type="submit">Delete All Notifications</button>
+</form>
+
+<!-- Display All Tasks -->
+<h2>All Tasks</h2>
+<ul th:each="task : ${tasks}">
+    <li th:text="${task.name}"></li>
+</ul>
+
+<!-- Create Task Form -->
+<h2>Create Task</h2>
+<form th:action="@{/api/tasks/create}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" required>
+
+    <label for="dueDate">Due Date:</label>
+    <input type="date" id="dueDate" name="dueDate" required>
+
+    <label for="priority">Priority:</label>
+    <input type="text" id="priority" name="priority" required>
+
+    <label for="status">Status:</label>
+    <input type="text" id="status" name="status" required>
+
+    <button type="submit">Create Task</button>
+</form>
+
+</body>
+</html>

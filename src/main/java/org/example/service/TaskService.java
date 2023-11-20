@@ -27,10 +27,9 @@ public class TaskService {
     }
 
     public Optional<TaskSearchDTO> findTaskById(Long id) {
-        Optional<TaskEntity> taskEntityOptional = taskRepository.findById(id);
-        return Optional.ofNullable(taskEntityOptional.map(taskMapper::mapTaskEntityToUserSearchDTO)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found")));
+        return taskRepository.findById(id).map(taskMapper::mapTaskEntityToUserSearchDTO);
     }
+
     public List<TaskSearchDTO> findAllTasks() {
         List<TaskEntity> taskEntities = taskRepository.findAll();
         return taskEntities.stream()
