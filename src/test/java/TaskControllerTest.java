@@ -36,9 +36,7 @@ class TaskControllerTest {
         Long taskId = 1L;
         TaskSearchDTO mockTaskSearchDTO = new TaskSearchDTO();
         when(taskService.findTaskById(taskId)).thenReturn(java.util.Optional.of(mockTaskSearchDTO));
-
         ResponseEntity<Optional<TaskSearchDTO>> result = taskController.findTaskById(taskId);
-
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertTrue(result.getBody().isPresent());
@@ -49,9 +47,7 @@ class TaskControllerTest {
 
         List<TaskSearchDTO> mockTaskSearchDTOs = Collections.singletonList(new TaskSearchDTO());
         when(taskService.findAllTasks()).thenReturn(mockTaskSearchDTOs);
-
         ResponseEntity<List<TaskSearchDTO>> result = taskController.findAllTasks();
-
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(1, result.getBody().size());
@@ -62,11 +58,8 @@ class TaskControllerTest {
 
         TaskCreateDTO inputDTO = new TaskCreateDTO();
         inputDTO.setName("Test Task");
-
         when(taskService.createTask(inputDTO)).thenReturn(inputDTO);
-
         ResponseEntity<CustomResponseDTO> result = taskController.createNewTask(inputDTO, null);
-
         assertNotNull(result);
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertNotNull(result.getBody());
@@ -77,11 +70,8 @@ class TaskControllerTest {
     void deleteTaskByIdTest() {
 
         Long taskId = 1L;
-
         doNothing().when(taskService).deleteTaskById(taskId);
-
         ResponseEntity<Void> result = taskController.deleteTaskById(taskId);
-
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNull(result.getBody());

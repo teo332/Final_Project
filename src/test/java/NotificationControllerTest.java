@@ -32,9 +32,7 @@ class NotificationControllerTest {
 
         List<NotificationDTO> mockNotifications = Collections.singletonList(new NotificationDTO());
         when(notificationService.getAllNotifications()).thenReturn(mockNotifications);
-
         List<NotificationDTO> result = notificationController.getAllNotifications().getBody();
-
         assertNotNull(result);
         assertEquals(1, result.size());
     }
@@ -47,11 +45,8 @@ class NotificationControllerTest {
         Long taskId = 1L;
         TaskSearchDTO taskSearchDTO = new TaskSearchDTO();
         taskSearchDTO.setId(taskId);
-
         when(notificationService.createNotification(inputDTO, taskId)).thenReturn(inputDTO);
-
         NotificationDTO result = notificationController.createNotification(inputDTO, taskId).getBody();
-
         assertNotNull(result);
         assertEquals("Test Message", result.getMessage());
     }
@@ -60,7 +55,6 @@ class NotificationControllerTest {
     void deleteAllNotificationsTest() {
 
         ResponseEntity<String> result = notificationController.deleteAllNotifications();
-
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
