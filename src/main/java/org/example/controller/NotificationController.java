@@ -20,7 +20,7 @@ public class NotificationController {
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
-    @GetMapping("/get")
+    @GetMapping("/getAll")
     public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
         List<NotificationDTO> notifications = notificationService.getAllNotifications();
         return ResponseEntity.ok(notifications);

@@ -3,6 +3,7 @@ package org.example.model.dtos;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -12,6 +13,6 @@ public class NotificationDTO {
 
     private Long id;
     private String message;
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
     private Long taskId;
 }

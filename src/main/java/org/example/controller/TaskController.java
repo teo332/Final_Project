@@ -40,7 +40,7 @@ public class TaskController {
     public ResponseEntity<CustomResponseDTO> createNewTask(@RequestBody @Valid TaskCreateDTO taskDTO, BindingResult bindingResult){
         CustomResponseDTO customResponseDTO = new CustomResponseDTO();
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult != null && bindingResult.hasErrors()) {
             String errorMessage = bindingResult.getFieldError().getDefaultMessage();
             customResponseDTO.setResponseObject(null);
             customResponseDTO.setResponseMessage(errorMessage);
@@ -52,7 +52,6 @@ public class TaskController {
         taskDTOList.add(taskDTO);
         customResponseDTO.setResponseMessage("Task created successfully");
         return new ResponseEntity<>(customResponseDTO, HttpStatus.CREATED);
-
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTaskById(@PathVariable Long id){

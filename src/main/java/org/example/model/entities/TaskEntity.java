@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -17,7 +18,7 @@ public class TaskEntity {
     private Long id;
     private String name;
     private String description;
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
     private String priority;
     private String status;
 }
