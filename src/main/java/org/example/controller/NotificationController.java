@@ -28,13 +28,16 @@ public class NotificationController {
 
     @PostMapping("/create/{taskId}")
     public ResponseEntity<NotificationDTO> createNotification(@RequestBody NotificationDTO notificationDTO, @PathVariable Long taskId) {
+        // Call the NotificationService to create a new notification for the specified task
         NotificationDTO createdNotification = notificationService.createNotification(notificationDTO, taskId);
+        // Return a response containing the created notification and CREATED status
         return new ResponseEntity<>(createdNotification, HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/deleteAll")
-    public ResponseEntity<String> deleteAllNotifications() {
+    public ResponseEntity<String> deleteAllNotifications(){
+        // Call the NotificationService to delete all notifications
         notificationService.deleteAllNotifications();
         return ResponseEntity.ok("All notifications deleted successfully");
     }
